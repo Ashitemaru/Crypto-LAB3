@@ -1,0 +1,34 @@
+------------------------------------------------------------------------------
+RESULTS FOR THE UNIFORMITY OF P-VALUES AND THE PROPORTION OF PASSING SEQUENCES
+------------------------------------------------------------------------------
+   generator is <sample_high_density.out>
+------------------------------------------------------------------------------
+ C1  C2  C3  C4  C5  C6  C7  C8  C9 C10  P-VALUE  PROPORTION  STATISTICAL TEST
+------------------------------------------------------------------------------
+ 23  19  26  21  15  21  14  18  18  25  0.626709    200/200     RandomExcursionsVariant
+ 22  28  14  24  16  16  17  30  18  15  0.105618    199/200     RandomExcursionsVariant
+ 22  23  25  21  13  11  26  14  24  21  0.167184    197/200     RandomExcursionsVariant
+ 28  20  25  15  18  26  13  20  17  18  0.289667    197/200     RandomExcursionsVariant
+ 28  22  22  24  15  20  15  18  22  14  0.428095    197/200     RandomExcursionsVariant
+ 23  22  30  16  13  19  22  22  18  15  0.289667    197/200     RandomExcursionsVariant
+ 22  26  20  25  20  22  15  13  15  22  0.474986    195/200     RandomExcursionsVariant
+ 21  29  19  19  16  15  29  16  18  18  0.242986    197/200     RandomExcursionsVariant
+ 26  17  25  11  20  15  19  26  16  25  0.176657    198/200     RandomExcursionsVariant
+ 25  25  21  20  22  21  21  18   6  21  0.167184    200/200     RandomExcursionsVariant
+ 23  21  28  20  20  21  18  12  18  19  0.595549    198/200     RandomExcursionsVariant
+ 15  17  28  23  22  24  15  18  20  18  0.534146    200/200     RandomExcursionsVariant
+ 16  20  23  21  26  15  23  23  18  15  0.668321    199/200     RandomExcursionsVariant
+ 18  20  19  20  25  20  22  23  18  15  0.935716    199/200     RandomExcursionsVariant
+ 16  21  23  21  26  15  21  16  23  18  0.749884    199/200     RandomExcursionsVariant
+ 17  20  19  21  28  24  18  15  18  20  0.719747    199/200     RandomExcursionsVariant
+ 14  27  19  20  23  17  25  21  22  12  0.358641    199/200     RandomExcursionsVariant
+ 12  23  22  19  22  20  21  23  21  17  0.825505    199/200     RandomExcursionsVariant
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+The minimum pass rate for the random excursion (variant) test
+is approximately = 193 for a sample size = 200 binary sequences.
+
+For further guidelines construct a probability table using the MAPLE program
+provided in the addendum section of the documentation.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

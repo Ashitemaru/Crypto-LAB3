@@ -1,0 +1,24 @@
+------------------------------------------------------------------------------
+RESULTS FOR THE UNIFORMITY OF P-VALUES AND THE PROPORTION OF PASSING SEQUENCES
+------------------------------------------------------------------------------
+   generator is <sample_random.out>
+------------------------------------------------------------------------------
+ C1  C2  C3  C4  C5  C6  C7  C8  C9 C10  P-VALUE  PROPORTION  STATISTICAL TEST
+------------------------------------------------------------------------------
+  6   5   3   6   1   4   4   7   4   1  0.414525     41/41      RandomExcursions
+  7   2   3   6   2   4   2   6   3   6  0.460664     41/41      RandomExcursions
+  8   4   3   2   7   1   4   6   3   3  0.258961     40/41      RandomExcursions
+  6   0   2   6   8   4   6   4   2   3  0.151616     36/41   *  RandomExcursions
+  6   1   5   4   3   4   5   4   6   3  0.811993     41/41      RandomExcursions
+  5   3   3   5   4   4   3   6   4   4  0.986869     40/41      RandomExcursions
+  6   5   1   4   3   6   3   3   5   5  0.764655     39/41      RandomExcursions
+  5   2   3   3   3   5   8   3   5   4  0.663130     39/41      RandomExcursions
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+The minimum pass rate for the random excursion (variant) test
+is approximately = 38 for a sample size = 41 binary sequences.
+
+For further guidelines construct a probability table using the MAPLE program
+provided in the addendum section of the documentation.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

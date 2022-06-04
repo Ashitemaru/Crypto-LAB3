@@ -1,0 +1,34 @@
+------------------------------------------------------------------------------
+RESULTS FOR THE UNIFORMITY OF P-VALUES AND THE PROPORTION OF PASSING SEQUENCES
+------------------------------------------------------------------------------
+   generator is <sample_low_density.out>
+------------------------------------------------------------------------------
+ C1  C2  C3  C4  C5  C6  C7  C8  C9 C10  P-VALUE  PROPORTION  STATISTICAL TEST
+------------------------------------------------------------------------------
+ 19  13  21  14  20  25  18  22  25  17  0.534146    193/194     RandomExcursionsVariant
+ 17  15  18  18  21  17  26  26  17  19  0.642599    192/194     RandomExcursionsVariant
+ 19  16  14  20  19  14  21  27  18  26  0.403984    191/194     RandomExcursionsVariant
+ 16  18  20  19  16  23  13  20  20  29  0.422829    192/194     RandomExcursionsVariant
+ 15  24  14  21  21  17  16  27  20  19  0.534146    193/194     RandomExcursionsVariant
+ 19   9  17  26  23  18  25  14  18  25  0.118630    193/194     RandomExcursionsVariant
+ 14  14  19  18  23  21  18  14  29  24  0.231703    192/194     RandomExcursionsVariant
+ 14  15  13  21  17  20  31  27  17  19  0.073776    193/194     RandomExcursionsVariant
+ 13  16  20  19  18  26  25  16  19  22  0.544788    193/194     RandomExcursionsVariant
+ 21  18  23  19  21  22  25  11  16  18  0.577070    189/194     RandomExcursionsVariant
+ 29  17  21  15  16  24  21  20  15  16  0.359074    187/194     RandomExcursionsVariant
+ 31  20  16  10  16  19  18  18  22  24  0.098423    189/194     RandomExcursionsVariant
+ 25  21  13  15  18  15  19  22  17  29  0.231703    191/194     RandomExcursionsVariant
+ 18  18  21  15  15  19  22  16  24  26  0.653554    192/194     RandomExcursionsVariant
+ 15  22  16  19  19  27  16  21  12  27  0.225440    193/194     RandomExcursionsVariant
+ 23  21  12  22  19  18  24  13  21  21  0.555494    193/194     RandomExcursionsVariant
+ 18  18  26  15  22  15  19  18  21  22  0.781206    194/194     RandomExcursionsVariant
+ 15  22  17  18  23  17  20  28  17  17  0.598820    194/194     RandomExcursionsVariant
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+The minimum pass rate for the random excursion (variant) test
+is approximately = 187 for a sample size = 194 binary sequences.
+
+For further guidelines construct a probability table using the MAPLE program
+provided in the addendum section of the documentation.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
