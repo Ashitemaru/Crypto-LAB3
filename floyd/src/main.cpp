@@ -92,40 +92,53 @@ bool operator == (const Hash &lhs, const Hash &rhs) {
 
 Hash min_x;
 
-uint64_t stack_search() {
+int64_t stack_search() {
+//    printf("%d\n", __LINE__);
     Hash x {
         .hash = {1}
     };
+//    printf("%d\n", __LINE__);
     decltype(std::chrono::steady_clock::now()) tm;
     const int K=100; /* The number of stacks */
-    const int stackSize=100;
-    struct { Hash val; uint64_t t; }
-    stack[K][stackSize];
+    const int stackSize=10000;
+    struct stack_elem{ Hash val; uint64_t t; };
+    auto stack = new stack_elem*[K];
+    for (int i = 0; i < K; ++i) {
+        stack[i] = new stack_elem[stackSize];
+    }
     int h[K]; /* The stack sizes */
-    uint64_t i, k, time=0;
+    int64_t i, k, time=0;
+//    printf("%d, %d, %d, %d\n", __LINE__, k, i, h[k]);
     for (i=0; i<K; i++)
         h[i]=0;
+//    printf("%d, %d, %d, %d\n", __LINE__, k, i, h[k]);
     while(1)
     {
         k = (x.hash[2])% K;
         for (i=h[k]-1; i>=0; i--)
             if (stack[k][i].val<=x)
                 break;
+
+//        printf("%d, %d, %d, %d\n", __LINE__, k, i, h[k]);
         if (i>=0 && stack[k][i].val==x){
             min_x = x;
             print_hash(&x);
-            printf("Steps: %llu, Stack: %llu, Cycle: %llu\n", time, stack[k][i].t, time - stack[k][i].t);
+            printf("Steps: %lu, Stack: %lu, Cycle: %lu\n", time, stack[k][i].t, time - stack[k][i].t);
             return time - stack[k][i].t;
         }
 
         stack[k][i+1].val=x;
         stack[k][i+1].t=time;
         h[k]=i+2;
+        if (h[k] >= stackSize) {
+            printf("Out of stack_size\n");
+            exit(-1);
+        }
         assert(h[k]<stackSize);
         x=hash((const uint8_t *) &x, 10);
         time++;
         if (time % 1000000 == 0) {
-            printf("%llu\n", time);
+            printf("%lu\n", time);
             auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - tm);
             printf("Time Cost: %lf\n", delta.count() / 1000.0);
             tm = std::chrono::steady_clock::now();
@@ -225,8 +238,13 @@ int floyd() {
     return 0;
 }
 int main() {
+//    char f[] = "0123456789";
+//    Hash h = hash((const uint8_t *)f, 10);
+//    print_hash(&h);
+//    exit(0);
+//    printf("%d\n", __LINE__);
     auto cyc {stack_search()};
-    printf("%llu\n", cyc);
+    printf("%lu\n", cyc);
     get_coll(cyc);
 //    floyd();
     return 0;
