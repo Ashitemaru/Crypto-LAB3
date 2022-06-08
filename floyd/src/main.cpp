@@ -114,7 +114,7 @@ uint64_t stack_search() {
         if (i>=0 && stack[k][i].val==x){
             min_x = x;
             print_hash(&x);
-            printf("Steps: %d, Stack: %d, Cycle: %d\n", time, stack[k][i].t, time - stack[k][i].t);
+            printf("Steps: %llu, Stack: %llu, Cycle: %llu\n", time, stack[k][i].t, time - stack[k][i].t);
             return time - stack[k][i].t;
         }
 
@@ -142,37 +142,12 @@ void get_coll(uint64_t d) {
     Hash x {
         .hash = {1}
     };
-    printf("d=%d\n", d);
 
     for (int i {0}; i < d; ++i) {
         x=hash((const uint8_t *) &x, 10);
         if (min_x == x) {
             puts("init: Min! ");
             printf("%d\n", i);
-        }
-    }
-    printf("%d\n", __LINE__);
-    for (int i {0}; i < d; ++i) {
-        x=hash((const uint8_t *) &x, 10);
-        if (min_x == x) {
-            puts("init: Min! ");
-            printf("%d\n", i);
-        }
-    }
-    printf("%d\n", __LINE__);
-    for (int i {0}; i < d; ++i) {
-        x=hash((const uint8_t *) &x, 10);
-        if (min_x == x) {
-            puts("init: Min! ");
-            printf("%d\n", i);
-        }
-    }
-    printf("%d\n", __LINE__);
-
-    while (true) {
-        x=hash((const uint8_t *) &x, 10);
-        if (min_x == x) {
-            puts("inf: Min! ");
         }
     }
 
@@ -180,31 +155,16 @@ void get_coll(uint64_t d) {
         .hash = {1}
     };
     Hash t1, t2;
-    uint64_t delta {0};
     while(true) {
         t1 = hash((const uint8_t *) &x, 10);
         t2 = hash((const uint8_t *) &y, 10);
+//        print_hash(&t1);
+//        print_hash(&t2);
         if (t1 == t2) {
             break;
         }
         x = t1;
         y = t2;
-        ++delta;
-
-//        if (delta % d == 0) {
-//            printf("mod: %llu\n", delta);
-//        }
-//        printf("- %d", delta);
-        if (min_x == x) {
-//            char hhhh[100];
-//            printf(">%llu\n", delta);
-//            printf("Err as %llu\n", delta);
-
-//            sprintf(hhhh, "%d", delta);
-            puts("Min!");
-//            puts(hhhh);
-//            delta = 0;
-        }
     }
 
     printf("X_1: ");
@@ -268,6 +228,6 @@ int main() {
     auto cyc {stack_search()};
     printf("%llu\n", cyc);
     get_coll(cyc);
-    floyd();
+//    floyd();
     return 0;
 }
