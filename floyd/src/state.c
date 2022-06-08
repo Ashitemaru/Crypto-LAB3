@@ -11,8 +11,8 @@ const uint64_t big_prime1 = 3118691898498409469ull;
 const uint64_t big_prime2 = 8177414977493372647ull;
 const uint64_t big_prime3 = 8390810104093054171ull;
 
-const int ABSORB_ROUNDS = 20;
-const int SQUEEZE_ROUNDS = 10;
+const int ABSORB_ROUNDS = 1;
+const int SQUEEZE_ROUNDS = 1;
 
 __attribute__((always_inline)) inline uint64_t circular_shiftr(uint64_t value, int s) {
     return (value >> s) | (value << (64 - s));
@@ -76,7 +76,7 @@ State squeeze_one_round(uint8_t* target, State input) {
 
 Hash squeeze(State input) {
     Hash ret;
-    for (int i = 0; i < 10; i += 2) {
+    for (int i = 0; i < 6; i += 2) {
         input = squeeze_one_round(ret.hash + i, input);
     }
     return ret;

@@ -10,5 +10,6 @@
 #include "state.h"
 
 Hash hash(const uint8_t* stream, size_t len);
+void HashAt(Hash *dst, const uint8_t* stream, size_t len);
 
 #endif
