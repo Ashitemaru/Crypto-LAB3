@@ -70,12 +70,19 @@ int __main() {
 
 extern const int hash_byte {5};
 
-void print_hash(Hash *h) {
+void repr_hash(Hash *h) {
     printf("{");
     for (int i {0}; i < 10; ++i) {
         printf("0x%02X, ", h->hash[i]);
     }
     puts("}");
+}
+
+void print_hash(Hash *h) {
+    for (int i {0}; i < hash_byte; ++i) {
+        printf("%02X ", h->hash[i]);
+    }
+    puts("");
 }
 
 bool operator <= (const Hash &lhs, const Hash &rhs) {
@@ -94,7 +101,7 @@ bool operator == (const Hash &lhs, const Hash &rhs) {
 
 Hash min_x;
 Hash init_hash {
-    .hash {'S', 't', 'a', 'r', 't'}
+    .hash {1}
 };
 
 int64_t stack_search() {
@@ -184,6 +191,10 @@ void get_coll(uint64_t d) {
     print_hash(&y);
     printf("Hash to: ");
     print_hash(&t2);
+    printf("Repr\n");
+    repr_hash(&x);
+    repr_hash(&y);
+
 }
 int main() {
 //    uint8_t f[] = {0xA2, 0x61, 0x99, 0x06, 0xD8, 0x03, 0x1F, 0xA5, 0x96, 0x9C, };
