@@ -1,0 +1,25 @@
+g++ -O3 src/tables.c src/hash.c src/main.cpp src/sbox.c src/state.c -w -o main
+./main
+=== Absorbing ===
+C988397AC302B838 21B40DE2D516AFCB 48967973C0450B40 167FCC7F0903FADD
+=== Absorbing ===
+After absorbing
+C988397AC3028434 DE5F46CF8E578605 97BA1163C47BAD96 581C44B32A73E079
+Squeeze one round
+Squeeze one round
+Squeeze one round
+Squeeze one round
+Squeeze one round
+68 AE BC DA 04 83 70 27 65 B2 
+
+=== Absorbing ===
+C988397AC302B838 22008DE2D516AFCB 48967973C0450B40 167FCC7F0903FADD
+=== Absorbing ===
+After absorbing
+C988397AC3028434 CE3FC6CF8E578605 4693D163C47BAD96 581C44B32A73E079
+Squeeze one round
+Squeeze one round
+Squeeze one round
+Squeeze one round
+Squeeze one round
+69 4D C0 D1 A6 BC FC A5 B6 CB 
