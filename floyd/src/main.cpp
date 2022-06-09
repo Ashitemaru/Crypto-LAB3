@@ -12,12 +12,7 @@
 #include "define.h"
 #include "hash.h"
 #include "sbox.h"
-void print_hash(Hash *h) {
-    for (int i {0}; i < 10; ++i) {
-        printf("%02X ", h->hash[i]);
-    }
-    puts("");
-}
+
 char *random_stream(size_t *len) {
 #define buf_sz 100
     static char buf[buf_sz];
@@ -68,16 +63,23 @@ void collision() {
     }
     fclose(f);
 }
-inline int hashcmp(uint8_t *ptr_a, uint8_t *ptr_b, int len) {
-    return memcmp(ptr_a, ptr_b, len);
-}
 int __main() {
     collision();
     return 0;
 }
 
-bool operator <= (const Hash &lhs, const Hash &rhs) {
+extern const int hash_byte {5};
+
+void print_hash(Hash *h) {
+    printf("{");
     for (int i {0}; i < 10; ++i) {
+        printf("0x%02X, ", h->hash[i]);
+    }
+    puts("}");
+}
+
+bool operator <= (const Hash &lhs, const Hash &rhs) {
+    for (int i {0}; i < hash_byte; ++i) {
         if (lhs.hash[i] > rhs.hash[i])
             return false;
         else if (lhs.hash[i] < rhs.hash[i])
@@ -87,16 +89,17 @@ bool operator <= (const Hash &lhs, const Hash &rhs) {
 }
 
 bool operator == (const Hash &lhs, const Hash &rhs) {
-    return !memcmp(&lhs, &rhs, 10);
+    return !memcmp(&lhs, &rhs, hash_byte);
 }
 
 Hash min_x;
+Hash init_hash {
+    .hash {'S', 't', 'a', 'r', 't'}
+};
 
 int64_t stack_search() {
 //    printf("%d\n", __LINE__);
-    Hash x {
-        .hash = {1}
-    };
+    Hash x {init_hash};
 //    printf("%d\n", __LINE__);
     decltype(std::chrono::steady_clock::now()) tm;
     const int K=100; /* The number of stacks */
@@ -122,6 +125,7 @@ int64_t stack_search() {
 //        printf("%d, %d, %d, %d\n", __LINE__, k, i, h[k]);
         if (i>=0 && stack[k][i].val==x){
             min_x = x;
+            printf("Minimum Element: ");
             print_hash(&x);
             printf("Steps: %lu, Stack: %lu, Cycle: %lu\n", time, stack[k][i].t, time - stack[k][i].t);
             return time - stack[k][i].t;
@@ -135,7 +139,7 @@ int64_t stack_search() {
             exit(-1);
         }
         assert(h[k]<stackSize);
-        x=hash((const uint8_t *) &x, 10);
+        x=hash((const uint8_t *) &x, hash_byte);
         time++;
         if (time % 1000000 == 0) {
             printf("%lu\n", time);
@@ -152,25 +156,17 @@ int64_t stack_search() {
 }
 
 void get_coll(uint64_t d) {
-    Hash x {
-        .hash = {1}
-    };
+    Hash x {init_hash};
 
     for (int i {0}; i < d; ++i) {
-        x=hash((const uint8_t *) &x, 10);
-        if (min_x == x) {
-            puts("init: Min! ");
-            printf("%d\n", i);
-        }
+        x=hash((const uint8_t *) &x, hash_byte);
     }
 
-    Hash y {
-        .hash = {1}
-    };
+    Hash y {init_hash};
     Hash t1, t2;
     while(true) {
-        t1 = hash((const uint8_t *) &x, 10);
-        t2 = hash((const uint8_t *) &y, 10);
+        t1 = hash((const uint8_t *) &x, hash_byte);
+        t2 = hash((const uint8_t *) &y, hash_byte);
 //        print_hash(&t1);
 //        print_hash(&t2);
         if (t1 == t2) {
@@ -189,63 +185,13 @@ void get_coll(uint64_t d) {
     printf("Hash to: ");
     print_hash(&t2);
 }
-
-
-
-int floyd() {
-    uint8_t ptr_a[10] = { 0 }, ptr_b[10] = { 0 };
-    Hash h1, h2, h3;
-    decltype(std::chrono::steady_clock::now()) time;
-    unsigned int cnt = 0;
-    do {
-        HashAt((Hash *) ptr_a, (const uint8_t*)ptr_a, 10);
-        HashAt((Hash *) ptr_a, (const uint8_t*)ptr_a, 10);
-        HashAt((Hash *) ptr_b, (const uint8_t*)ptr_b, 10);
-        if (++cnt > 2147483648) return -1; 
-        if (cnt % 1000000 == 0) {
-            printf("%d\n", cnt);
-            auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - time);
-            printf("Time Cost: %lf\n", delta.count() / 1000.0);
-            time = std::chrono::steady_clock::now();
-        }
-//        print_hash(&h2);
-//        print_hash(&h3);
-    } while (hashcmp(ptr_a, ptr_b, 10));
-    printf("Pointers meet @ ");
-    print_hash((Hash *)ptr_a);
-    printf("Iteration count: %d\n", cnt);
-    memset(ptr_a, 0, 10);
-    while (true) {
-        h1 = hash((const uint8_t*)ptr_a, 10);
-        h2 = hash((const uint8_t*)ptr_b, 10);
-        if (hashcmp(h1.hash, h2.hash, 10)) {
-            memcpy(ptr_a, h1.hash, 10);
-            memcpy(ptr_b, h2.hash, 10);
-        } else {
-            break;
-        }
-    }
-    printf("X_1: ");
-    print_hash((Hash *)ptr_a);
-    h1 = hash(ptr_a, 10);
-    printf("Hash to: ");
-    print_hash(&h1);
-    printf("X_2: ");
-    print_hash((Hash *)ptr_b);
-    h2 = hash(ptr_b, 10);
-    printf("Hash to: ");
-    print_hash(&h2);
-    return 0;
-}
 int main() {
-//    char f[] = "0123456789";
-//    Hash h = hash((const uint8_t *)f, 10);
+//    uint8_t f[] = {0xA2, 0x61, 0x99, 0x06, 0xD8, 0x03, 0x1F, 0xA5, 0x96, 0x9C, };
+//    Hash h = hash((const uint8_t *)f, 5);
 //    print_hash(&h);
 //    exit(0);
-//    printf("%d\n", __LINE__);
+    printf("Len: %d byte\n", hash_byte);
     auto cyc {stack_search()};
-    printf("%lu\n", cyc);
     get_coll(cyc);
-//    floyd();
     return 0;
 }

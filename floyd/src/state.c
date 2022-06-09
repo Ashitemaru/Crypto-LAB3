@@ -6,6 +6,8 @@
 #include "sbox.h"
 #include "state.h"
 
+extern const int hash_byte;
+
 // ?: Some other name?
 const uint64_t big_prime1 = 3118691898498409469ull;
 const uint64_t big_prime2 = 8177414977493372647ull;
@@ -76,8 +78,12 @@ State squeeze_one_round(uint8_t* target, State input) {
 
 Hash squeeze(State input) {
     Hash ret;
-    for (int i = 0; i < 10; i += 2) {
+    int i;
+    for (i = 0; i < hash_byte; i += 2) {
         input = squeeze_one_round(ret.hash + i, input);
+    }
+    for (; i < 10; ++i) {
+        ret.hash[i] = 0;
     }
     return ret;
 }
