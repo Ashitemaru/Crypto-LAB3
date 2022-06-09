@@ -2,5 +2,5 @@
 result.txt
 out.txt
 *.exe
-main
+floyd/build/
 main*

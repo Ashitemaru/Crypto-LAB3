@@ -13,62 +13,7 @@
 #include "hash.h"
 #include "sbox.h"
 
-char *random_stream(size_t *len) {
-#define buf_sz 100
-    static char buf[buf_sz];
-    for (int i = 0; i < buf_sz; ++i) {
-        char byte = 0;
-        for (int j = 0; j < 8; ++j) {
-            uint8_t rn = rand() % 100;
-            if (rn < 50) {
-                byte |= (1 << j);
-            }
-        }
-        buf[i] = byte;
-    }
-    *len = buf_sz;
-    return buf;
-}
-size_t diff(const Hash *lhs, const Hash *rhs) {
-    size_t difference = 0;
-    for (int i = 0; i < 10; ++i) {
-        uint8_t res = lhs->hash[i] ^ rhs->hash[i];
-        for (int j = 0; j < 8; ++j) {
-            if (res & (1 << j))
-                ++difference;
-        }
-    }
-    return difference;
-}
-int __gt(const void *x, const void *y) {
-    return *(size_t *) x > *(size_t *) y;
-}
-void collision() {
-    size_t len;
-    char *stream = random_stream(&len);
-    Hash ori = hash((const uint8_t *) stream, len);
-    size_t *list = (size_t *) malloc(sizeof(size_t) * len * 8);
-    for (int i = 0; i < len; ++i) {
-        for (int j = 0; j < 8; ++j) {
-            stream[i] ^= 1 << j;
-            Hash new_hash = hash((const uint8_t *) stream, len);
-            size_t delta = diff(&ori, &new_hash);
-            list[8 * i + j] = delta;
-        }
-    }
-    qsort(list, len * 8, sizeof(size_t), __gt);
-    FILE *f = fopen("result.txt", "w");
-    for (int i = 0; i < len * 8; ++i) {
-        fprintf(f, "%zu\n", list[i]);
-    }
-    fclose(f);
-}
-int __main() {
-    collision();
-    return 0;
-}
-
-extern const int hash_byte {5};
+extern const int hash_byte {6};
 
 void repr_hash(Hash *h) {
     printf("{");
@@ -164,6 +109,8 @@ int64_t stack_search() {
 
 void get_coll(uint64_t d) {
     Hash x {init_hash};
+    decltype(std::chrono::steady_clock::now()) tm;
+    uint64_t time{0};
 
     for (int i {0}; i < d; ++i) {
         x=hash((const uint8_t *) &x, hash_byte);
@@ -174,13 +121,18 @@ void get_coll(uint64_t d) {
     while(true) {
         t1 = hash((const uint8_t *) &x, hash_byte);
         t2 = hash((const uint8_t *) &y, hash_byte);
-//        print_hash(&t1);
-//        print_hash(&t2);
         if (t1 == t2) {
             break;
         }
         x = t1;
         y = t2;
+        if (time % 100000000 == 0) {
+            printf("%lu\n", time);
+            auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - tm);
+            printf("Time Cost: %lf\n", delta.count() / 1000.0);
+            tm = std::chrono::steady_clock::now();
+        }
+        time += 1;
     }
 
     printf("X_1: ");
