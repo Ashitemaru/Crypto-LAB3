@@ -103,7 +103,7 @@ int64_t stack_search() {
 //            }
             printf("\n");
         }
-//        print_hash(&x);
+//        dump_hash(&x);
     }
 }
 
@@ -151,7 +151,7 @@ void get_coll(uint64_t d) {
 int main() {
 //    uint8_t f[] = {0xA2, 0x61, 0x99, 0x06, 0xD8, 0x03, 0x1F, 0xA5, 0x96, 0x9C, };
 //    Hash h = hash((const uint8_t *)f, 5);
-//    print_hash(&h);
+//    dump_hash(&h);
 //    exit(0);
     printf("Len: %d byte\n", hash_byte);
     auto cyc {stack_search()};
