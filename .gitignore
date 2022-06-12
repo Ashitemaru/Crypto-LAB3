@@ -3,4 +3,5 @@ result.txt
 out.txt
 *.exe
 floyd/build/
-main*
+main
+*/build
