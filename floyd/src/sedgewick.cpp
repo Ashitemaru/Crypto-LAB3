@@ -84,9 +84,22 @@ public:
         return _map.size() > M;
     }
 
+    bool search_value( uint64_t value, Hash &out )
+    {
+        for (const auto &entry: _map)
+        {
+            if (entry.second == value)
+            {
+                out = entry.first;
+                return true;
+            }
+        }
+        return false;
+    }
+
 private:
     std::unordered_map<Hash, uint64_t> _map{ M };
-};
+} table;
 
 class Console
 {
@@ -177,17 +190,16 @@ int main()
     uint64_t g = (uint64_t) sqrt(( M / 16 ) * ( 1 + 14.0 / M ));
     StopWatch report_timer, total_timer;
 
-    auto table = new HashTable;
     while (true)
     {
-        if (i % b == 0 && table->is_full())
+        if (i % b == 0 && table.is_full())
         {
-            table->prune( b );
+            table.prune( b );
             b *= 2;
         }
         if (i % b == 0)
         {
-            table->insert( h, i );
+            table.insert( h, i );
         }
         h = hash( h.hash, hash_byte );
         ++i;
@@ -198,7 +210,7 @@ int main()
         }
         if (i % ( g * b ) < b)
         {
-            j = table->search( h );
+            j = table.search( h );
             if (j)
             {
                 break;
@@ -207,7 +219,6 @@ int main()
     }
     console.log( "Cycle found: i = %lld, j = %lld, elapsed_time = %lf s", i, j, 0.001 * total_timer.time_ms());
     console.new_line();
-    delete table;
 
     uint64_t c = 1;
     bool find_c = false;
@@ -231,12 +242,16 @@ int main()
     }
     uint64_t ii = std::max( c, g * b * ( i / ( g * b ) - 1 ));
     uint64_t jj = ii - c;
-    console.log( "Recover parameter: ii = %lld, jj = %lld, c = %lld\n", ii, jj, c );
+    console.log( "Recover parameter: ii = %lld, jj = %lld, c = %lld", ii, jj, c );
+    console.new_line();
 
     CircularBuffer cb( c );
     Hash h_l = initial;
     report_timer.reset();
-    for (uint64_t i = 0; i < jj + c; i++)
+    uint64_t search_target = jj / b * b;
+    console.log( "Search for fast-recovering" );
+    bool found_value = table.search_value( search_target, h_l );
+    for (uint64_t i = found_value ? search_target : 0; i < jj + c; i++)
     {
         cb.push( h_l );
         h_l = hash( h_l.hash, hash_byte );
