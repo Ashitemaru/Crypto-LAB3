@@ -172,7 +172,7 @@ $^*$ 表示未能找到碰撞。
 
 ​		取长度为 $8\times10^4$ 的 $M$，逐位翻转，结果如下。
 
-<img src="C:\Users\joshu\AppData\Roaming\Typora\typora-user-images\image-20220612081111726.png" alt="image-20220612081111726" style="zoom:50%;" />
+<img src="https://lambdablog.oss-cn-beijing.aliyuncs.com/bed/image-20220612081111726.png" alt="image-20220612081111726" style="zoom:50%;" />
 
 ​		对结果定量计算
 
@@ -240,7 +240,7 @@ $^*$ 表示未能找到碰撞。
 
 ### 测试环境
 
-​		以上的分析我们使用的编译命令为 `g++ * -O3 main`，测试环境为：
+以上的分析中，我们使用的编译命令为 `g++ * -O3 main`，测试环境为：
 
 ```
 WSL2 Ubuntu20.04
