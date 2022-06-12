@@ -4,108 +4,88 @@
 #include <cstdarg>
 #include <chrono>
 #include <thread>
+#include <unordered_map>
+#include <functional>
+#include <cmath>
 
-#define M 400000000
+#define M 200000000
 
-extern const int hash_byte{ 7 };
+extern const int hash_byte{ 6 };
+
+template<>
+struct std::hash<Hash>
+{
+    union hash_to_u64
+    {
+        uint64_t u64;
+        uint8_t hash[8];
+    };
+
+    std::size_t operator()( Hash const &h ) const noexcept
+    {
+        hash_to_u64 conv;
+        for (int i = 0; i < 8; i++)
+        {
+            conv.hash[i] = h.hash[i];
+        }
+        return conv.u64;
+    }
+};
+
+bool operator==( const Hash &lhs, const Hash &rhs )
+{
+    for (int i = 0; i < hash_byte; i++)
+    {
+        if (lhs.hash[i] != rhs.hash[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 class HashTable
 {
 public:
-    HashTable()
+    void insert( const Hash &k, uint64_t v )
     {
-        m = 0;
-        keys = new Hash[M];
-        values = new uint64_t[M];
-        vis = new bool[M];
-        memset( values, 0, M * sizeof( uint64_t ));
-        memset( vis, false, M * sizeof( bool ));
+        _map[k] = v;
     }
 
-    ~HashTable()
+    uint64_t search( const Hash &k )
     {
-        delete[] keys;
-        delete[] values;
-        delete[] vis;
-    }
-
-    void insert( Hash k, uint64_t v )
-    {
-        size_t i = hash_to_idx( k );
-        while (true)
+        auto res = _map.find( k );
+        if (res == _map.end())
         {
-            if (vis[i])
-            {
-                ++i;
-                if (i == M)
-                {
-                    i = 0;
-                }
-            } else
-            {
-                memcpy( &keys[i], &k, sizeof( Hash ));
-                values[i] = v;
-                vis[i] = true;
-                ++m;
-                break;
-            }
-        }
-    }
-
-    uint64_t search( Hash k )
-    {
-        size_t i = hash_to_idx( k );
-        while (true)
+            return 0;
+        } else
         {
-            if (vis[i])
-            {
-                if (memcmp( &keys[i], &k, sizeof( Hash )) == 0)
-                {
-                    return values[i];
-                } else
-                {
-                    ++i;
-                    if (i == M)
-                    {
-                        i = 0;
-                    }
-                }
-            } else
-            {
-                return 0;
-            }
+            return res->second;
         }
     }
 
     void prune( uint64_t b )
     {
         b *= 2;
-        for (size_t i = 0; i < M; i++)
+        for (auto i = _map.begin(), last = _map.end(); i != last;)
         {
-            if (values[i] % b)
+            if (i->second % b != 0)
             {
-                vis[i] = false;
-                --m;
+                i = _map.erase( i );
+            } else
+            {
+                ++i;
             }
         }
     }
 
     bool is_full() const
     {
-        return m > M * 0.7;
+        return _map.size() > M;
     }
 
 private:
-    size_t hash_to_idx( const Hash &h )
-    {
-        return static_cast<size_t>((( h.hash[3] << 24 ) | ( h.hash[2] << 16 ) | ( h.hash[1] << 8 ) | ( h.hash[0] ))) %
-               M;
-    }
-
-    size_t m;
-    Hash *keys;
-    uint64_t *values;
-    bool *vis;
+    std::unordered_map<Hash, uint64_t> _map{ M };
 };
 
 class Console
@@ -193,7 +173,8 @@ int main()
 {
     Hash initial{ .hash{ 1 }};
     Hash h = initial;
-    uint64_t i = 0, b = 1, g = 4, j = 0;
+    uint64_t i = 0, b = 1, j = 0;
+    uint64_t g = (uint64_t) sqrt(( M / 16 ) * ( 1 + 14.0 / M ));
     StopWatch report_timer, total_timer;
 
     auto table = new HashTable;
