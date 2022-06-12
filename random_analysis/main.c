@@ -147,19 +147,19 @@ int main() {
 
     srand(time(0));
 
-   // random stream
-   printf("Generating random sample...\n");
-   sample = fopen("sample_random.out", "w");
-   buf_p = buf;
-   for (int i = 0; i < iteration_count; ++i) {
-       input = random_stream(&len);
-       Hash h = hash((const uint8_t*)input, len);
-       memcpy(buf_p, &h, sizeof(Hash));
-       buf_p += sizeof(Hash);
-       process_bar((double) i / (iteration_count - 1));
-   }
-   puts("");
-   fwrite(buf, file_size, 1, sample);
+    // random stream
+    printf("Generating random sample...\n");
+    sample = fopen("sample_random.out", "w");
+    buf_p = buf;
+    for (int i = 0; i < iteration_count; ++i) {
+        input = random_stream(&len);
+        Hash h = hash((const uint8_t*)input, len);
+        memcpy(buf_p, &h, sizeof(Hash));
+        buf_p += sizeof(Hash);
+        process_bar((double) i / (iteration_count - 1));
+    }
+    puts("");
+    fwrite(buf, file_size, 1, sample);
 
     // high density stream
     printf("Generating high density sample...\n");
